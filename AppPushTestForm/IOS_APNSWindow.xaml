@@ -1,0 +1,36 @@
+﻿<Window x:Class="AppPush.IOS_APNSWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppPush"
+        mc:Ignorable="d"
+        Title="IOS APNS" Height="397.401" Width="524.39" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Button Content="Send" HorizontalAlignment="Left" Margin="227,329,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Label Content="Device Token&#xA;" HorizontalAlignment="Left" Margin="11,172,0,0" VerticalAlignment="Top" Height="28" Width="91"/>
+        <ListView x:Name="tokenListView" HorizontalAlignment="Left" Height="114" Margin="11,200,0,0" VerticalAlignment="Top" Width="492" IsSynchronizedWithCurrentItem="False">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Token" DisplayMemberBinding="{Binding Token}"/>
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="UIElement.MouseLeftButtonUp" Handler="onListViewItemClick" />
+                </Style>
+            </ListView.ItemContainerStyle>
+
+        </ListView>
+        <Button Content="Add" HorizontalAlignment="Left" Margin="428,174,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <Label Content="Cert File" HorizontalAlignment="Left" Margin="11,29,0,0" VerticalAlignment="Top"/>
+        <Label Content="Cert Pasword" HorizontalAlignment="Left" Margin="11,82,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="certFilePathTextBox" HorizontalAlignment="Left" Height="23" Margin="116,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" RenderTransformOrigin="0.167,0.652" IsReadOnly="True"/>
+        <TextBox x:Name="certPwdTextBox" HorizontalAlignment="Left" Height="23" Margin="116,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="387"/>
+        <Button Content="Select" HorizontalAlignment="Left" Margin="428,31,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.12,0.591" Click="Button_Click_2"/>
+        <Label Content="Server Mode" HorizontalAlignment="Left" Margin="11,123,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="productionRadioButton" Content="Production" HorizontalAlignment="Left" Margin="116,130,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="sandboxRadioButton" Content="Sandbox" HorizontalAlignment="Left" Margin="243,129,0,0" VerticalAlignment="Top" IsChecked="True" />
+
+    </Grid>
+</Window>

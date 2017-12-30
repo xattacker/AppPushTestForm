@@ -1,0 +1,14 @@
+﻿<Window x:Class="AppPush.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppPush"
+        mc:Ignorable="d"
+        Title="AppPushTestForm" Height="176" Width="384" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Button Content="Android FCM" HorizontalAlignment="Left" Margin="122,32,0,0" VerticalAlignment="Top" Width="117" Click="Button_Click"/>
+        <Button Content="iOS APNS" HorizontalAlignment="Left" Margin="122,95,0,0" VerticalAlignment="Top" Width="117" Click="Button_Click_1"/>
+
+    </Grid>
+</Window>
