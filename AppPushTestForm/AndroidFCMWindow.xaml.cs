@@ -17,22 +17,43 @@ using Xattacker.Utility;
 using Xattacker.Utility.Json;
 using System.IO;
 using FCM.Sender;
+using Android.GCM;
 
 namespace AppPush
 {
+    public enum AndroidSenderType
+    {
+        FCM,
+        GCM
+    }
+
+
     /// <summary>
     /// AndroidFCMWindow.xaml 的互動邏輯
     /// </summary>
     public partial class AndroidFCMWindow : Window
     {
-        private const string RECORD_NAME = "fcm_reocrd.json";
         private AndroidFCMRecord record;
+        private AndroidSenderType senderType;
 
-        public AndroidFCMWindow()
+        public AndroidFCMWindow(AndroidSenderType type)
         {
             InitializeComponent();
 
-            string path = System.IO.Path.Combine(AppProperties.AppPath, RECORD_NAME);
+            this.senderType = type;
+
+            switch (this.senderType)
+            {
+                case AndroidSenderType.FCM:
+                    this.Title = "Android FCM";
+                    break;
+
+                case AndroidSenderType.GCM:
+                    this.Title = "Android GCM";
+                    break;
+            }
+
+            string path = this.RecordPath;
             if (File.Exists(path))
             {
                 // load last record
@@ -81,12 +102,25 @@ namespace AppPush
 
 
             string json = this.record.SerializeToJson();
-            string path = System.IO.Path.Combine(AppProperties.AppPath, RECORD_NAME);
-
+            string path = this.RecordPath;
             File.WriteAllText(path, json);
         }
 
         private void Send()
+        {
+            switch (this.senderType)
+            {
+                case AndroidSenderType.FCM:
+                    this.SendFCM();
+                    break;
+
+                case AndroidSenderType.GCM:
+                    this.SendGCM();
+                    break;
+            }
+        }
+
+        private void SendFCM()
         {
             try
             {
@@ -108,6 +142,66 @@ namespace AppPush
             catch (Exception ex)
             {
                 MessageBox.Show("error happen:" + ex.ToString());
+            }
+        }
+
+        private void SendGCM()
+        {
+            try
+            {
+                GCMSender sender = new GCMSender
+                                    (
+                                    this.record.AppId, // API Key, 透過 google player API developer console 申請 
+                                    this.record.SenderId // sender id, 透過 google player API developer console 申請 
+                                    );
+
+                GCMNotificationData data = new GCMNotificationData();
+                data.Message = "有一則推播通知";
+
+                int status_code = -1;
+
+                GCMResponse response = sender.SendNotificationV2
+                                        (
+                                        this.record.DeviceTokens,
+                                        "",
+                                        data, // send message, 大小不可超過4k
+                                        60 * 60 * 24 * 1, // 定義訊息在Server端可存活多久, 單位為秒
+                                        out status_code
+                                        );
+
+                if (status_code == 200)
+                {
+                    MessageBox.Show("send succeed");
+                }
+                else
+                {
+                    MessageBox.Show("get response failed: " + status_code);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error happen:" + ex.ToString());
+            }
+        }
+
+        private string RecordPath
+        {
+            get
+            {
+                string name = string.Empty;
+
+                switch (this.senderType)
+                {
+                    case AndroidSenderType.FCM:
+                        name = "fcm_reocrd.json";
+                        break;
+
+                    case AndroidSenderType.GCM:
+                        name = "gcm_reocrd.json";
+                        break;
+                }
+
+                return System.IO.Path.Combine(AppProperties.AppPath, name);
             }
         }
 

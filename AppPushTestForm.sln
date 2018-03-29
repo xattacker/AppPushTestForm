@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppPushTestForm", "AppPushT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{C529E715-C2AF-4EFF-874B-3C4BDE947138}"
 	ProjectSection(SolutionItems) = preProject
+		library\AndroidGCM.dll = library\AndroidGCM.dll
 		library\CommonLibrary.dll = library\CommonLibrary.dll
 		library\FCM.Sender.dll = library\FCM.Sender.dll
 		library\Newtonsoft.Json.dll = library\Newtonsoft.Json.dll

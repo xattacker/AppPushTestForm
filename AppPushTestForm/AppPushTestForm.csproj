@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AndroidGCM">
+      <HintPath>..\library\AndroidGCM.dll</HintPath>
+    </Reference>
     <Reference Include="CommonLibrary">
       <HintPath>..\library\CommonLibrary.dll</HintPath>
     </Reference>
