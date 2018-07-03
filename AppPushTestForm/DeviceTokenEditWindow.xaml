@@ -8,7 +8,7 @@
         Title="DeviceToken Edit" Height="145" Width="470" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Button Content="Save" HorizontalAlignment="Left" Margin="193,80,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <TextBox x:Name="tokenTextBox" HorizontalAlignment="Left" Height="23" Margin="10,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="444"/>
+        <TextBox x:Name="tokenTextBox" Height="23" Margin="10,28,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

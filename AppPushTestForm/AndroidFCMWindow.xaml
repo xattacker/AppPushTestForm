@@ -10,10 +10,10 @@
         <Button Content="Send" HorizontalAlignment="Left" Margin="227,303,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         <Label Content="AppId" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.578,1.038"/>
         <Label Content="SenderId" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.213,0.654"/>
-        <TextBox x:Name="appIdTextBox" HorizontalAlignment="Left" Height="59" Margin="93,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
-        <TextBox x:Name="senderIdTextBox" HorizontalAlignment="Left" Height="23" Margin="93,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="410"/>
+        <TextBox x:Name="appIdTextBox" Height="59" Margin="93,13,12,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox x:Name="senderIdTextBox" Height="23" Margin="93,98,12,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <Label Content="Device Token&#xD;&#xA;" HorizontalAlignment="Left" Margin="11,146,0,0" VerticalAlignment="Top" Height="28" Width="91"/>
-        <ListView x:Name="tokenListView" HorizontalAlignment="Left" Height="114" Margin="11,174,0,0" VerticalAlignment="Top" Width="492" IsSynchronizedWithCurrentItem="False">
+        <ListView x:Name="tokenListView" Height="114" Margin="11,174,12,0" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Token" DisplayMemberBinding="{Binding Token}"/>
@@ -26,7 +26,7 @@
             </ListView.ItemContainerStyle>
 
         </ListView>
-        <Button Content="Add" HorizontalAlignment="Left" Margin="428,148,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <Button Content="Add" Margin="428,148,12,0" VerticalAlignment="Top" Click="Button_Click_1"/>
 
     </Grid>
 </Window>
