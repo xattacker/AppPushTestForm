@@ -40,6 +40,7 @@ namespace AppPush
         {
             InitializeComponent();
 
+            this.waitingProgressBar.Visibility = Visibility.Hidden;
             this.senderType = type;
 
             switch (this.senderType)
@@ -120,68 +121,125 @@ namespace AppPush
             }
         }
 
+        private void ShowWaitingBar(bool show)
+        {
+            if (show)
+            {
+                this.IsEnabled = false;
+                this.waitingProgressBar.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.IsEnabled = true;
+                this.waitingProgressBar.Visibility = Visibility.Hidden;
+            }
+        }
+
         private void SendFCM()
         {
-            try
-            {
-                FCMAttributes attribute = new FCMAttributes();
-                attribute.SenderId = this.record.SenderId;
-                attribute.AppId = this.record.AppId;
+            Exception ex = null;
+            string response = null; // 回應結果內容
+            BackgroundWorker worker = new BackgroundWorker();
 
-                FCMSender fcm_sender = new FCMSender();
+            worker.DoWork += delegate
+                            {
+                                try
+                                {
+                                    FCMAttributes attribute = new FCMAttributes();
+                                    attribute.SenderId = this.record.SenderId;
+                                    attribute.AppId = this.record.AppId;
 
-                FCMNotificationData data = new FCMNotificationData();
-                data.Title = "更新通知";
-                data.Body = "有一則推播通知";
+                                    FCMSender fcm_sender = new FCMSender();
 
-                string response = null; // 回應結果內容
-                fcm_sender.SendPushNotification<FCMNotificationData>(attribute, this.record.DeviceTokens, data, out response);
+                                    FCMNotificationData data = new FCMNotificationData();
+                                    data.Title = "更新通知";
+                                    data.Body = "有一則推播通知";
 
-                MessageBox.Show(response);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("error happen:" + ex.ToString());
-            }
+                                    fcm_sender.SendPushNotification<FCMNotificationData>(attribute, this.record.DeviceTokens, data, out response);
+                                }
+                                catch (Exception ex2)
+                                {
+                                    ex = ex2;
+                                }
+                            };
+
+            worker.RunWorkerCompleted += delegate
+                                        {
+                                            this.ShowWaitingBar(false);
+
+                                            if (ex != null)
+                                            {
+                                                MessageBox.Show("error happen:" + ex.ToString());
+                                            }
+                                            else if (!string.IsNullOrEmpty(response))
+                                            {
+                                                MessageBox.Show(response);
+                                            }
+                                        };
+
+            worker.RunWorkerAsync();
+
+            this.ShowWaitingBar(true);
         }
 
         private void SendGCM()
         {
-            try
-            {
-                GCMSender sender = new GCMSender
-                                    (
-                                    this.record.AppId, // API Key, 透過 google player API developer console 申請 
-                                    this.record.SenderId // sender id, 透過 google player API developer console 申請 
-                                    );
+            Exception ex = null;
+            int status_code = -1;
+            BackgroundWorker worker = new BackgroundWorker();
 
-                GCMNotificationData data = new GCMNotificationData();
-                data.Message = "有一則推播通知";
+            worker.DoWork += delegate
+                            {
+                                try
+                                {
+                                    GCMSender sender = new GCMSender
+                                                        (
+                                                        this.record.AppId, // API Key, 透過 google player API developer console 申請 
+                                                        this.record.SenderId // sender id, 透過 google player API developer console 申請 
+                                                        );
 
-                int status_code = -1;
+                                    GCMNotificationData data = new GCMNotificationData();
+                                    data.Message = "有一則推播通知";
 
-                GCMResponse response = sender.SendNotificationV2
-                                        (
-                                        this.record.DeviceTokens,
-                                        "",
-                                        data, // send message, 大小不可超過4k
-                                        60 * 60 * 24 * 1, // 定義訊息在Server端可存活多久, 單位為秒
-                                        out status_code
-                                        );
+                                    GCMResponse response = sender.SendNotificationV2
+                                                            (
+                                                            this.record.DeviceTokens,
+                                                            "",
+                                                            data, // send message, 大小不可超過4k
+                                                            60 * 60 * 24 * 1, // 定義訊息在Server端可存活多久, 單位為秒
+                                                            out status_code
+                                                            );
+                                }
+                                catch (Exception ex2)
+                                {
+                                    ex = ex2;
+                                }
+                            };
 
-                if (status_code == 200)
-                {
-                    MessageBox.Show("send succeed");
-                }
-                else
-                {
-                    MessageBox.Show("get response failed: " + status_code);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("error happen:" + ex.ToString());
-            }
+            worker.RunWorkerCompleted += delegate
+                                        {
+                                            this.ShowWaitingBar(false);
+
+                                            if (ex != null)
+                                            {
+                                                MessageBox.Show("error happen:" + ex.ToString());
+                                            }
+                                            else
+                                            {
+                                                if (status_code == 200)
+                                                {
+                                                    MessageBox.Show("send succeed");
+                                                }
+                                                else
+                                                {
+                                                    MessageBox.Show("get response failed: " + status_code);
+                                                }
+                                            }
+                                        };
+
+            worker.RunWorkerAsync();
+
+            this.ShowWaitingBar(true);
         }
 
         private string RecordPath

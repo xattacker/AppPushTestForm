@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,6 +32,8 @@ namespace AppPush
         public IOS_APNSWindow()
         {
             InitializeComponent();
+
+            this.waitingProgressBar.Visibility = Visibility.Hidden;
 
             string path = System.IO.Path.Combine(AppProperties.AppPath, RECORD_NAME);
             if (File.Exists(path))
@@ -98,29 +101,63 @@ namespace AppPush
 
         private void Send()
         {
-            try
+            Exception ex = null;
+            BackgroundWorker worker = new BackgroundWorker();
+
+            worker.DoWork += delegate
+                                {
+                                    try
+                                    {
+                                        // 產生 push playload
+                                        PushMessage msg = new PushMessage();
+                                        msg.Aps.Badge = 1;
+                                        msg.Aps.Sound = "default";
+                                        msg.Aps.Alert = "有一則推播通知";
+                                        // msg.Aps.ContentAvailable = 0;
+
+                                        PushSender sender = new PushSender();
+
+                                        sender.PushMessage
+                                        (
+                                        this.record.DeviceTokens, // device token
+                                        msg, // push message, 不可超過2kb
+                                        this.record.CertificateFilePath, // p12授權檔路徑
+                                        this.record.CertificatePassword, // 授權檔密碼
+                                        this.record.ServerMode // 推送到測試(false)或正式(true)server 
+                                        );
+                                    }
+                                    catch (Exception ex2)
+                                    {
+                                        ex = ex2;
+                                    }
+                                };
+
+            worker.RunWorkerCompleted += delegate
+                                        {
+                                            this.ShowWaitingBar(false);
+
+                                            if (ex != null)
+                                            {
+                                                MessageBox.Show("error happen:" + ex.ToString());
+                                            }
+                                        };
+
+            worker.RunWorkerAsync();
+
+            this.ShowWaitingBar(true);
+        }
+
+        private void ShowWaitingBar(bool show)
+        {
+            if (show)
             {
-                // 產生 push playload
-                PushMessage msg = new PushMessage();
-                msg.Aps.Badge = 1;
-                msg.Aps.Sound = "default";
-                msg.Aps.Alert = "有一則推播通知";
-                // msg.Aps.ContentAvailable = 0;
-
-                PushSender sender = new PushSender();
-
-                sender.PushMessage
-                (
-                this.record.DeviceTokens, // device token
-                msg, // push message, 不可超過2kb
-                this.record.CertificateFilePath, // p12授權檔路徑
-                this.record.CertificatePassword, // 授權檔密碼
-                this.record.ServerMode // 推送到測試(false)或正式(true)server 
-                );
+                this.IsEnabled = false;
+                this.waitingProgressBar.Visibility = Visibility.Visible;
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("error happen:" + ex.ToString());
+                this.IsEnabled = true;
+                this.waitingProgressBar.Visibility = Visibility.Hidden;
             }
         }
 

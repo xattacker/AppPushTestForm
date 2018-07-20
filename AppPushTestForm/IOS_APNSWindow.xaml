@@ -31,6 +31,7 @@
         <Label Content="Server Mode" HorizontalAlignment="Left" Margin="11,123,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="productionRadioButton" Content="Production" HorizontalAlignment="Left" Margin="116,130,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="sandboxRadioButton" Content="Sandbox" HorizontalAlignment="Left" Margin="243,129,0,0" VerticalAlignment="Top" IsChecked="True" />
+        <ProgressBar x:Name="waitingProgressBar" Height="19" Margin="68,152,69,0" VerticalAlignment="Top" IsIndeterminate="True"/>
 
     </Grid>
 </Window>
