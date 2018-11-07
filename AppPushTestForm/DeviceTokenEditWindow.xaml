@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AppPush"
         mc:Ignorable="d"
-        Title="DeviceToken Edit" Height="145" Width="470" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="DeviceToken Edit" Height="223.86" Width="464.912" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-        <Button Content="Save" HorizontalAlignment="Left" Margin="193,80,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-        <TextBox x:Name="tokenTextBox" Height="23" Margin="10,28,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="193,149,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <TextBox x:Name="tokenTextBox" Height="102" Margin="10,28,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

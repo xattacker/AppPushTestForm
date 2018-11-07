@@ -9,7 +9,7 @@
     <Grid>
         <Button Content="Send" HorizontalAlignment="Left" Margin="227,329,0,0" Width="75" Click="Button_Click" Height="22" VerticalAlignment="Top"/>
         <Label Content="Device Token&#xA;" HorizontalAlignment="Left" Margin="11,172,0,0" VerticalAlignment="Top" Height="28" Width="91"/>
-        <ListView x:Name="tokenListView" Height="114" Margin="11,200,15,0" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False">
+        <ListView x:Name="tokenListView" Height="114" Margin="11,200,15,0" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False" PreviewMouseRightButtonDown="tokenListView_PreviewMouseRightButtonDown">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Token" DisplayMemberBinding="{Binding Token}"/>

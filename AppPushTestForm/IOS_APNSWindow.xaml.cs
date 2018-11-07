@@ -230,5 +230,18 @@ namespace AppPush
                 callback(dialog.FileName);
             }
         }
+
+        private void tokenListView_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.tokenListView.SelectedIndex >= 0)
+            {
+                MessageBoxResult result = MessageBox.Show("delete this token?");
+                if (result == MessageBoxResult.OK)
+                {
+                    TokenItem item = (TokenItem)this.tokenListView.SelectedItem;
+                    this.tokenListView.Items.Remove(item);
+                }
+            }
+        }
     }
 }

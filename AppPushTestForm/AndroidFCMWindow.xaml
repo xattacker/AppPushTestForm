@@ -13,7 +13,7 @@
         <TextBox x:Name="appIdTextBox" Height="59" Margin="93,13,12,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBox x:Name="senderIdTextBox" Height="23" Margin="93,98,12,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <Label Content="Device Token&#xD;&#xA;" HorizontalAlignment="Left" Margin="11,146,0,0" VerticalAlignment="Top" Height="28" Width="91"/>
-        <ListView x:Name="tokenListView" Height="114" Margin="11,174,12,0" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False">
+        <ListView x:Name="tokenListView" Height="114" Margin="11,174,12,0" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False" PreviewMouseRightButtonDown="tokenListView_PreviewMouseRightButtonDown">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Token" DisplayMemberBinding="{Binding Token}"/>
