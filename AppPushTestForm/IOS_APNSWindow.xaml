@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AppPush"
         mc:Ignorable="d"
-        Title="IOS APNS" Height="397.401" Width="524.39" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="IOS APNS" Height="508.401" Width="589.39" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Button Content="Send" HorizontalAlignment="Left" Margin="227,329,0,0" Width="75" Click="Button_Click" Height="22" VerticalAlignment="Top"/>
-        <Label Content="Device Token&#xA;" HorizontalAlignment="Left" Margin="11,172,0,0" VerticalAlignment="Top" Height="28" Width="91"/>
-        <ListView x:Name="tokenListView" Height="114" Margin="11,200,15,0" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False" PreviewMouseRightButtonDown="tokenListView_PreviewMouseRightButtonDown">
+        <Button Content="Send" HorizontalAlignment="Left" Margin="243,431,0,0" Width="99" Click="Button_Click" Height="22" VerticalAlignment="Top"/>
+        <Label Content="Device Token&#xA;" HorizontalAlignment="Left" Margin="11,271,0,0" VerticalAlignment="Top" Height="28" Width="91"/>
+        <ListView x:Name="tokenListView" Height="114" Margin="11,299,10,0" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False" PreviewMouseRightButtonDown="tokenListView_PreviewMouseRightButtonDown">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Token" DisplayMemberBinding="{Binding Token}"/>
@@ -22,16 +22,51 @@
             </ListView.ItemContainerStyle>
 
         </ListView>
-        <Button Content="Add" Margin="428,174,15,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-        <Label Content="Cert File" HorizontalAlignment="Left" Margin="11,29,0,0" VerticalAlignment="Top"/>
-        <Label Content="Cert Pasword" HorizontalAlignment="Left" Margin="11,82,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="certFilePathTextBox" HorizontalAlignment="Left" Height="23" Margin="116,32,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" RenderTransformOrigin="0.167,0.652" IsReadOnly="True"/>
-        <TextBox x:Name="certPwdTextBox" Height="23" Margin="116,82,15,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button Content="Select" Margin="428,31,15,0" VerticalAlignment="Top" RenderTransformOrigin="0.12,0.591" Click="Button_Click_2"/>
-        <Label Content="Server Mode" HorizontalAlignment="Left" Margin="11,123,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="productionRadioButton" Content="Production" HorizontalAlignment="Left" Margin="116,130,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="sandboxRadioButton" Content="Sandbox" HorizontalAlignment="Left" Margin="243,129,0,0" VerticalAlignment="Top" IsChecked="True" />
-        <ProgressBar x:Name="waitingProgressBar" Height="19" Margin="68,152,69,0" VerticalAlignment="Top" IsIndeterminate="True"/>
+        <Button Content="Add" Margin="428,273,10,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Label Content="Server Mode" HorizontalAlignment="Left" Margin="11,185,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="productionRadioButton" Content="Production" HorizontalAlignment="Left" Margin="116,190,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="sandboxRadioButton" Content="Sandbox" HorizontalAlignment="Left" Margin="243,189,0,0" VerticalAlignment="Top" IsChecked="True" />
+        <ProgressBar x:Name="waitingProgressBar" Height="19" Margin="68,203,69,0" VerticalAlignment="Top" IsIndeterminate="True"/>
+        <TabControl x:Name="typeTabCtrl" Height="159" Margin="11,10,10,0" VerticalAlignment="Top">
+            <TabItem Header="Certificate (P12)">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="128*"/>
+                        <ColumnDefinition Width="22*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="393*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Cert File" HorizontalAlignment="Left" Margin="0,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.946,-2.846"/>
+                    <Label Content="Cert Pasword" HorizontalAlignment="Left" Margin="0,57,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="certFilePathTextBox" HorizontalAlignment="Left" Height="23" Margin="99,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" RenderTransformOrigin="0.167,0.652" IsReadOnly="True" Grid.ColumnSpan="4"/>
+                    <Button Content="Select" Margin="256,13,3,0" VerticalAlignment="Top" RenderTransformOrigin="0.12,0.591" Click="Button_Click_2" Grid.Column="3"/>
+                    <TextBox x:Name="certPwdTextBox" Height="23" Margin="99,58,3,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Auth Key (p8)">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="14*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="21*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="500*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Key File" HorizontalAlignment="Left" Margin="0,12,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.946,-2.846" Grid.ColumnSpan="5"/>
+                    <Label Content="Key ID" HorizontalAlignment="Left" Margin="0,56,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
+                    <TextBox x:Name="keyFilePathTextBox" HorizontalAlignment="Left" Height="23" Margin="41,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="302" RenderTransformOrigin="0.167,0.652" IsReadOnly="True" Grid.Column="5"/>
+                    <Button Content="Select" Margin="0,13,3,0" VerticalAlignment="Top" RenderTransformOrigin="0.12,0.591" Grid.Column="5" Click="Button_Click_3" HorizontalAlignment="Right" Width="134"/>
+                    <TextBox x:Name="keyIDTextBox" Height="23" Margin="41,57,304,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="5"/>
+                    <TextBox x:Name="teamIDTextBox" Height="23" Margin="294,57,3,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="5"/>
+                    <Label Content="Team ID" HorizontalAlignment="Left" Margin="221,55,0,0" VerticalAlignment="Top" Grid.Column="5"/>
+                    <Label Content="Bundle ID" HorizontalAlignment="Left" Margin="0,93,0,0" VerticalAlignment="Top" Grid.ColumnSpan="6" Width="71"/>
+                    <TextBox x:Name="bundleIDTextBox" Height="23" Margin="41,95,3,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="5"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <TextBox x:Name="messageTextBox" Height="23" Margin="116,236,10,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.167,0.652"/>
+        <Label Content="Message" HorizontalAlignment="Left" Margin="18,235,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

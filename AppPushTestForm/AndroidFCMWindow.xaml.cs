@@ -54,6 +54,11 @@ namespace AppPush
                     break;
             }
 
+            this.LoadRecord();
+        }
+
+        private void LoadRecord()
+        {
             string path = this.RecordPath;
             if (File.Exists(path))
             {
@@ -63,6 +68,7 @@ namespace AppPush
                     this.record = JsonUtility.DeserializeFromJson<AndroidFCMRecord>(File.ReadAllText(path));
                     this.senderIdTextBox.Text = this.record.SenderId;
                     this.appIdTextBox.Text = this.record.AppId;
+                    this.messageTextBox.Text = this.record.Message;
 
                     if (this.record.DeviceTokens != null)
                     {
@@ -89,6 +95,8 @@ namespace AppPush
 
             this.record.SenderId = this.senderIdTextBox.Text;
             this.record.AppId = this.appIdTextBox.Text;
+
+            this.record.Message = this.messageTextBox.Text;
 
 
             List<string> tokens = new List<string>();
@@ -152,8 +160,8 @@ namespace AppPush
                                     FCMSender fcm_sender = new FCMSender();
 
                                     FCMNotificationData data = new FCMNotificationData();
-                                    data.Title = "更新通知";
-                                    data.Body = "有一則推播通知";
+                                    data.Title = "push notification";
+                                    data.Body = this.record.Message;
 
                                     fcm_sender.SendPushNotification<FCMNotificationData>(attribute, this.record.DeviceTokens, data, out response);
                                 }
@@ -266,9 +274,14 @@ namespace AppPush
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // click send
-            if (this.senderIdTextBox.Text.Length == 0 || this.appIdTextBox.Text.Length == 0 || this.tokenListView.Items.Count == 0)
+            if (
+               this.senderIdTextBox.Text.Length == 0 ||
+               this.appIdTextBox.Text.Length == 0 ||
+               this.messageTextBox.Text.Length == 0 ||
+               this.tokenListView.Items.Count == 0
+               )
             {
-                MessageBox.Show("SenderId, AppId and DeviceToken could not be empty !!");
+                MessageBox.Show("SenderId, AppId, Message and DeviceToken could not be empty !!");
 
                 return;
             }
@@ -314,8 +327,8 @@ namespace AppPush
         {
             if (this.tokenListView.SelectedIndex >= 0)
             {
-                MessageBoxResult result = MessageBox.Show("delete this token?");
-                if (result == MessageBoxResult.OK)
+                MessageBoxResult result = MessageBox.Show("delete this token?", "", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
                 {
                     TokenItem item = (TokenItem)this.tokenListView.SelectedItem;
                     this.tokenListView.Items.Remove(item);

@@ -12,5 +12,8 @@ namespace AppPush.Data
     {
         [DataMember(Name = "tokens")]
         public List<string> DeviceTokens { get; set; }
+
+        [DataMember(Name = "message")]
+        public string Message { get; set; }
     }
 }

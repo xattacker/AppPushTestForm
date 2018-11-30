@@ -34,7 +34,11 @@ namespace AppPush
             InitializeComponent();
 
             this.waitingProgressBar.Visibility = Visibility.Hidden;
+            this.LoadRecord();
+        }
 
+        private void LoadRecord()
+        {
             string path = System.IO.Path.Combine(AppProperties.AppPath, RECORD_NAME);
             if (File.Exists(path))
             {
@@ -42,8 +46,24 @@ namespace AppPush
                 try
                 {
                     this.record = Xattacker.Utility.Json.JsonUtility.DeserializeFromJson<IOS_APNSRecord>(File.ReadAllText(path));
-                    this.certFilePathTextBox.Text = this.record.CertificateFilePath;
-                    this.certPwdTextBox.Text = this.record.CertificatePassword;
+
+                    if (this.record.CertificateInfo != null)
+                    {
+                        this.certFilePathTextBox.Text = this.record.CertificateInfo.CertificateFilePath;
+                        this.certPwdTextBox.Text = this.record.CertificateInfo.CertificatePassword;
+                    }
+
+                    if (this.record.AuthInfo != null)
+                    {
+                        this.keyFilePathTextBox.Text = this.record.AuthInfo.KeyFilePath;
+                        this.keyIDTextBox.Text = this.record.AuthInfo.KeyID;
+                        this.teamIDTextBox.Text = this.record.AuthInfo.TeamID;
+                        this.bundleIDTextBox.Text = this.record.AuthInfo.BundleID;
+                    }
+
+
+                    this.messageTextBox.Text = this.record.Message;
+
 
                     if (this.record.ServerMode)
                     {
@@ -66,6 +86,7 @@ namespace AppPush
                 }
                 catch
                 {
+                    MessageBox.Show("Load Record Failed");
                 }
             }
         }
@@ -77,9 +98,22 @@ namespace AppPush
                 this.record = new IOS_APNSRecord();
             }
 
-            this.record.CertificateFilePath = this.certFilePathTextBox.Text;
-            this.record.CertificatePassword = this.certPwdTextBox.Text;
+
+            APNSCertificateInfo cert_info = new APNSCertificateInfo();
+            cert_info.CertificateFilePath = this.certFilePathTextBox.Text;
+            cert_info.CertificatePassword = this.certPwdTextBox.Text;
+            this.record.CertificateInfo = cert_info;
+
+            APNSAuthInfo auth_info = new APNSAuthInfo();
+            auth_info.KeyFilePath = this.keyFilePathTextBox.Text;
+            auth_info.KeyID = this.keyIDTextBox.Text;
+            auth_info.TeamID = this.teamIDTextBox.Text;
+            auth_info.BundleID = this.bundleIDTextBox.Text;
+            this.record.AuthInfo = auth_info;
+
             this.record.ServerMode = this.productionRadioButton.IsChecked ?? false;
+
+            this.record.Message = this.messageTextBox.Text;
 
 
             List<string> tokens = new List<string>();
@@ -99,7 +133,7 @@ namespace AppPush
             File.WriteAllText(path, json);
         }
 
-        private void Send()
+        private void SendByP12()
         {
             Exception ex = null;
             BackgroundWorker worker = new BackgroundWorker();
@@ -112,19 +146,22 @@ namespace AppPush
                                         PushMessage msg = new PushMessage();
                                         msg.Aps.Badge = 1;
                                         msg.Aps.Sound = "default";
-                                        msg.Aps.Alert = "有一則推播通知";
+                                        msg.Aps.Alert = this.record.Message;
                                         // msg.Aps.ContentAvailable = 0;
 
-                                        PushSender sender = new PushSender();
+                                        if (this.record.CertificateInfo != null)
+                                        { 
+                                            PushSender sender = new PushSender();
 
-                                        sender.PushMessage
-                                        (
-                                        this.record.DeviceTokens, // device token
-                                        msg, // push message, 不可超過2kb
-                                        this.record.CertificateFilePath, // p12授權檔路徑
-                                        this.record.CertificatePassword, // 授權檔密碼
-                                        this.record.ServerMode // 推送到測試(false)或正式(true)server 
-                                        );
+                                            sender.PushMessage
+                                            (
+                                            this.record.DeviceTokens, // device token
+                                            msg, // push message, 不可超過2kb
+                                            this.record.CertificateInfo.CertificateFilePath, // p12授權檔路徑
+                                            this.record.CertificateInfo.CertificatePassword, // 授權檔密碼
+                                            this.record.ServerMode // 推送到測試(false)或正式(true)server 
+                                            );
+                                        }
                                     }
                                     catch (Exception ex2)
                                     {
@@ -145,6 +182,59 @@ namespace AppPush
             worker.RunWorkerAsync();
 
             this.ShowWaitingBar(true);
+        }
+
+        private void SendByP8()
+        {
+            try
+            {
+                // 產生 push playload
+                PushMessage msg = new PushMessage();
+                msg.Aps.Badge = 1;
+                msg.Aps.Sound = "default";
+                msg.Aps.Alert = this.record.Message;
+                // msg.Aps.ContentAvailable = 0;
+
+                ApnsTBASender sender = new ApnsTBASender();
+
+                ApnsAuthParas paras = new ApnsAuthParas();
+                paras.KeyPath = this.record.AuthInfo.KeyFilePath;
+                paras.KeyID = this.record.AuthInfo.KeyID;
+                paras.TeamID = this.record.AuthInfo.TeamID;
+                paras.BundleID = this.record.AuthInfo.BundleID;
+
+                sender.Push(
+                    paras,
+                    msg, 
+                    this.record.DeviceTokens,
+                    (bool succeed, string response) =>
+                    {
+                        // delegate invoke for async callback
+                        Application.Current.Dispatcher.Invoke(
+                            new Action(() => {
+                                this.ShowWaitingBar(false);
+
+                                MessageBox.Show(response);
+                            }));
+                    },
+                    (Exception ex) =>
+                    {
+                        // delegate invoke for async callback
+                        Application.Current.Dispatcher.Invoke(
+                            new Action(() => {
+                                this.ShowWaitingBar(false);
+
+                                 MessageBox.Show("error happen:" + ex.ToString());
+                            }));
+                    }
+                    );
+
+                this.ShowWaitingBar(true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("error happen:" + ex.ToString());
+            }
         }
 
         private void ShowWaitingBar(bool show)
@@ -175,19 +265,47 @@ namespace AppPush
             win.ShowDialog();
         }
 
+        // click to send
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // click send
-            if (this.certFilePathTextBox.Text.Length == 0 || this.certPwdTextBox.Text.Length == 0 || this.tokenListView.Items.Count == 0)
+            if (this.typeTabCtrl.SelectedIndex == 0)
             {
-                MessageBox.Show("Cert file, Cert password and DeviceToken could not be empty !!");
+                if (
+                   this.certFilePathTextBox.Text.Length == 0 || 
+                   this.certPwdTextBox.Text.Length == 0 ||
+                   this.messageTextBox.Text.Length == 0 || 
+                   this.tokenListView.Items.Count == 0
+                   )
+                {
+                    MessageBox.Show("Cert file, Cert password, Message and DeviceToken could not be empty !!");
 
-                return;
+                    return;
+                }
+
+
+                this.SaveRecord();
+                this.SendByP12();
             }
+            else
+            {
+                if (
+                   this.keyFilePathTextBox.Text.Length == 0 || 
+                   this.keyIDTextBox.Text.Length == 0 ||
+                   this.teamIDTextBox.Text.Length == 0 ||
+                   this.bundleIDTextBox.Text.Length == 0 ||
+                   this.messageTextBox.Text.Length == 0 ||
+                   this.tokenListView.Items.Count == 0
+                   )
+                {
+                    MessageBox.Show("Auth Key file, KeyID, TeamID, BundleID, Message and DeviceToken could not be empty !!");
+
+                    return;
+                }
 
 
-            this.SaveRecord();
-            this.Send();
+                this.SaveRecord();
+                this.SendByP8();
+            }
         }
 
         // click ListView item
@@ -213,6 +331,7 @@ namespace AppPush
             // click select certificate file path
             this.OpenFileDialog
             (
+           "select file (*.p12)|*.p12",
             (string filePath) =>
             {
                 this.certFilePathTextBox.Text = filePath;
@@ -220,10 +339,23 @@ namespace AppPush
             );
         }
 
-        private void OpenFileDialog(Action<string> callback)
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            // click select certificate file path
+            this.OpenFileDialog
+            (
+            "select file (*.p8)|*.p8",
+            (string filePath) =>
+            {
+                this.keyFilePathTextBox.Text = filePath;
+            }
+            );
+        }
+
+        private void OpenFileDialog(string filter, Action<string> callback)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "select file (*.p12)|*.p12";
+            dialog.Filter = filter;
 
             if (dialog.ShowDialog() == true)
             {
@@ -235,8 +367,8 @@ namespace AppPush
         {
             if (this.tokenListView.SelectedIndex >= 0)
             {
-                MessageBoxResult result = MessageBox.Show("delete this token?");
-                if (result == MessageBoxResult.OK)
+                MessageBoxResult result = MessageBox.Show("delete this token?", "", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
                 {
                     TokenItem item = (TokenItem)this.tokenListView.SelectedItem;
                     this.tokenListView.Items.Remove(item);

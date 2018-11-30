@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AppPush"
         mc:Ignorable="d"
-        Title="Android FCM" Height="373" Width="521" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Android FCM" Height="453" Width="521" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Button Content="Send" HorizontalAlignment="Left" Margin="227,303,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="Send" HorizontalAlignment="Left" Margin="227,373,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
         <Label Content="AppId" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.578,1.038"/>
         <Label Content="SenderId" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.213,0.654"/>
         <TextBox x:Name="appIdTextBox" Height="59" Margin="93,13,12,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBox x:Name="senderIdTextBox" Height="23" Margin="93,98,12,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Label Content="Device Token&#xD;&#xA;" HorizontalAlignment="Left" Margin="11,146,0,0" VerticalAlignment="Top" Height="28" Width="91"/>
-        <ListView x:Name="tokenListView" Height="114" Margin="11,174,12,0" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False" PreviewMouseRightButtonDown="tokenListView_PreviewMouseRightButtonDown">
+        <Label Content="Device Token&#xD;&#xA;" HorizontalAlignment="Left" Margin="11,216,0,0" VerticalAlignment="Top" Height="28" Width="91"/>
+        <ListView x:Name="tokenListView" Height="114" Margin="11,244,12,0" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False" PreviewMouseRightButtonDown="tokenListView_PreviewMouseRightButtonDown">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Token" DisplayMemberBinding="{Binding Token}"/>
@@ -26,8 +26,10 @@
             </ListView.ItemContainerStyle>
 
         </ListView>
-        <Button Content="Add" Margin="428,148,12,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Button Content="Add" Margin="428,218,12,0" VerticalAlignment="Top" Click="Button_Click_1"/>
         <ProgressBar x:Name="waitingProgressBar" Height="19" Margin="67,129,67,0" VerticalAlignment="Top" IsIndeterminate="True"/>
+        <Label Content="Message" HorizontalAlignment="Left" Margin="12,167,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.213,0.654"/>
+        <TextBox x:Name="messageTextBox" Height="23" Margin="95,169,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

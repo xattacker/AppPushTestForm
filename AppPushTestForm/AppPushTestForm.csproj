@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AppPush</RootNamespace>
     <AssemblyName>AppPushTestForm</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -43,6 +43,15 @@
     </Reference>
     <Reference Include="FCM.Sender">
       <HintPath>..\library\FCM.Sender.dll</HintPath>
+    </Reference>
+    <Reference Include="HttpTwo">
+      <HintPath>..\library\HttpTwo.dll</HintPath>
+    </Reference>
+    <Reference Include="HttpTwo.HPack">
+      <HintPath>..\library\HttpTwo.HPack.dll</HintPath>
+    </Reference>
+    <Reference Include="jose-jwt">
+      <HintPath>..\library\jose-jwt.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -79,6 +88,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ApnsAuthParas.cs" />
+    <Compile Include="ApnsTBASender.cs" />
     <Compile Include="AppProperties.cs" />
     <Compile Include="Data\AndroidFCMRecord.cs" />
     <Compile Include="Data\DataRecord.cs" />
