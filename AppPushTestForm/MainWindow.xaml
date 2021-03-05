@@ -7,9 +7,8 @@
         mc:Ignorable="d"
         Title="AppPushTestForm" Height="176" Width="384" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Button Content="Android FCM" HorizontalAlignment="Left" Margin="40,32,0,0" VerticalAlignment="Top" Width="116" Click="Button_Click"/>
-        <Button Content="iOS APNS" HorizontalAlignment="Left" Margin="122,95,0,0" VerticalAlignment="Top" Width="117" Click="Button_Click_1"/>
-        <Button Content="Android GCM" HorizontalAlignment="Left" Margin="221,32,0,0" VerticalAlignment="Top" Width="117" Click="Button_Click_2" />
+        <Button Content="Android FCM" HorizontalAlignment="Left" Margin="122,34,0,0" VerticalAlignment="Top" Width="116" Click="Button_Click"/>
+        <Button Content="iOS APNS" HorizontalAlignment="Left" Margin="122,76,0,0" VerticalAlignment="Top" Width="117" Click="Button_Click_1"/>
 
     </Grid>
 </Window>

@@ -1,22 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppPushTestForm", "AppPushTestForm\AppPushTestForm.csproj", "{50E90724-42F8-48A8-8C09-81C9C5B6A0C2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{C529E715-C2AF-4EFF-874B-3C4BDE947138}"
 	ProjectSection(SolutionItems) = preProject
-		library\AndroidGCM.dll = library\AndroidGCM.dll
 		library\CommonLibrary.dll = library\CommonLibrary.dll
-		library\FCM.Sender.dll = library\FCM.Sender.dll
 		library\HttpTwo.dll = library\HttpTwo.dll
 		library\HttpTwo.HPack.dll = library\HttpTwo.HPack.dll
 		library\jose-jwt.dll = library\jose-jwt.dll
 		library\Newtonsoft.Json.dll = library\Newtonsoft.Json.dll
 		library\PushSharp.Apple.dll = library\PushSharp.Apple.dll
 		library\PushSharp.Core.dll = library\PushSharp.Core.dll
-		library\PushSharp.Sender.dll = library\PushSharp.Sender.dll
 	EndProjectSection
 EndProject
 Global
@@ -32,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B3698FF1-042C-421D-9801-8C5F6C6BD4EC}
 	EndGlobalSection
 EndGlobal

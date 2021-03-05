@@ -28,7 +28,7 @@ namespace AppPush
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // click Android FCM
-            AndroidFCMWindow win = new AndroidFCMWindow(AndroidSenderType.FCM);
+            AndroidFCMWindow win = new AndroidFCMWindow();
             win.ShowDialog();
         }
 
@@ -36,13 +36,6 @@ namespace AppPush
         {
             // click iOS APNS
             IOS_APNSWindow win = new IOS_APNSWindow();
-            win.ShowDialog();
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            // click Android GCM
-            AndroidFCMWindow win = new AndroidFCMWindow(AndroidSenderType.GCM);
             win.ShowDialog();
         }
     }

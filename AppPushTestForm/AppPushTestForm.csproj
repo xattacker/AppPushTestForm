@@ -35,14 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AndroidGCM">
-      <HintPath>..\library\AndroidGCM.dll</HintPath>
-    </Reference>
     <Reference Include="CommonLibrary">
       <HintPath>..\library\CommonLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="FCM.Sender">
-      <HintPath>..\library\FCM.Sender.dll</HintPath>
     </Reference>
     <Reference Include="HttpTwo">
       <HintPath>..\library\HttpTwo.dll</HintPath>
@@ -62,9 +56,6 @@
     </Reference>
     <Reference Include="PushSharp.Core">
       <HintPath>..\library\PushSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="PushSharp.Sender">
-      <HintPath>..\library\PushSharp.Sender.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -94,6 +85,10 @@
     <Compile Include="Data\AndroidFCMRecord.cs" />
     <Compile Include="Data\DataRecord.cs" />
     <Compile Include="Data\IOS_APNSRecord.cs" />
+    <Compile Include="FCM.Sender\FCMNotification.cs" />
+    <Compile Include="FCM.Sender\FCMSender.cs" />
+    <Compile Include="PushSharp.Sender\PushMessage.cs" />
+    <Compile Include="PushSharp.Sender\PushSender.cs" />
     <Compile Include="TokenItem.cs" />
     <Page Include="AndroidFCMWindow.xaml">
       <SubType>Designer</SubType>

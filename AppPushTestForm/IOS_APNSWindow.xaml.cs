@@ -35,7 +35,7 @@ namespace AppPush
                 // load last record
                 try
                 {
-                    this.record = Xattacker.Utility.Json.JsonUtility.DeserializeFromJson<IOS_APNSRecord>(File.ReadAllText(path));
+                    this.record = JsonUtility.DeserializeFromJson<IOS_APNSRecord>(File.ReadAllText(path));
 
                     if (this.record.CertificateInfo != null)
                     {
@@ -102,7 +102,6 @@ namespace AppPush
             this.record.AuthInfo = auth_info;
 
             this.record.ServerMode = this.productionRadioButton.IsChecked ?? false;
-
             this.record.Message = this.messageTextBox.Text;
 
 

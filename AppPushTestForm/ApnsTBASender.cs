@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
-using System.Net.Http.Headers;
-using System.Net;
 using PushSharp.Sender;
 using Xattacker.Utility;
 
@@ -82,7 +80,7 @@ namespace AppPush
             requestMessage.RequestUri = uri;
             requestMessage.Headers.Add("authorization", string.Format("bearer {0}", accessToken));
             //requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
-            requestMessage.Headers.Add("apns-id",GUID.GenerateGUID());
+            requestMessage.Headers.Add("apns-id", GUID.GenerateGUID());
             requestMessage.Headers.Add("apns-expiration", "0");
             requestMessage.Headers.Add("apns-priority", "10");
             requestMessage.Headers.Add("apns-topic", paras.BundleID);
